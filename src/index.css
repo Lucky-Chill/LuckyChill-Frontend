@@ -1,16 +1,10 @@
 @import 'tailwindcss';
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  height: 100%;
+@theme {
+  --color-primary-white: #f9fafb;
+  --color-gachon-blue: #014f9e;
+  --color-gachon-light-blue: #b8d6f4;
+  --color-middle-blue: #6998d1;
+  --color-mudang-red: #dc1b1b;
+  --color-gachon-orange: #f1ab23;
 }
