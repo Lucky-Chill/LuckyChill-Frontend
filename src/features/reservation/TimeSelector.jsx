@@ -1,0 +1,95 @@
+/**
+ * 시간 슬롯 선택 컴포넌트
+ * @description 시작/종료 시간을 순차 선택하고 선택 범위를 하이라이트합니다.
+ *              가로 스크롤 방식으로 표시됩니다.
+ */
+
+const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
+
+/**
+ * @param {Object} props
+ * @param {string[]} props.reservedTimes - 이미 예약된 시간 슬롯 배열
+ * @param {string|null} props.startTime - 선택된 시작 시간
+ * @param {string|null} props.endTime - 선택된 종료 시간
+ * @param {(time: string) => void} props.onTimeSelect - 시간 선택 콜백
+ */
+const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
+  /**
+   * 시간 버튼의 스타일 클래스를 반환
+   * @param {string} time
+   * @returns {string}
+   */
+  const getTimeClass = (time) => {
+    const base =
+      'shrink-0 w-11 h-11 flex items-center justify-center text-xs font-semibold border-none rounded-md cursor-pointer transition-all duration-150 ';
+
+    if (reservedTimes.includes(time)) {
+      return base + 'bg-[#9CA3AF] text-white cursor-not-allowed';
+    }
+
+    const tNum = parseInt(time);
+    const sNum = startTime ? parseInt(startTime) : null;
+    const eNum = endTime ? parseInt(endTime) : null;
+
+    if (sNum !== null && eNum !== null) {
+      const lo = Math.min(sNum, eNum);
+      const hi = Math.max(sNum, eNum);
+      if (tNum >= lo && tNum <= hi) {
+        return base + 'bg-[#1D4ED8] text-white';
+      }
+      return base + 'bg-[#F59E0B] text-white hover:bg-[#D97706]';
+    }
+
+    if (sNum !== null && time === startTime) {
+      return base + 'bg-[#1D4ED8] text-white';
+    }
+
+    return base + 'bg-[#F59E0B] text-white hover:bg-[#D97706]';
+  };
+
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#111] mb-2">
+        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        시간 선택
+      </div>
+
+      <div className="text-[11px] text-[#2563EB] text-right mb-2">
+        시작 시간과 종료 시간을 클릭하세요
+      </div>
+
+      <div className="flex gap-1 overflow-x-auto pb-1">
+        {TIME_SLOTS.map((time) => (
+          <button
+            key={time}
+            className={getTimeClass(time)}
+            disabled={reservedTimes.includes(time)}
+            onClick={() => onTimeSelect(time)}
+          >
+            {time}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-3.5 mt-2.5 text-[11px] text-[#555]">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
+          <span>예약가능</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#1D4ED8]" />
+          <span>선택됨</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#6B7280]" />
+          <span>예약불가</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TimeSelector;
