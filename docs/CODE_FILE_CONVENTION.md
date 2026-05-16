@@ -8,11 +8,10 @@
 
 우리 팀은 의존성(Dependency) 버전 충돌 및 Lock 파일 혼재를 방지하기 위해 **npm**을 엄격하게 사용합니다.
 
-* **사용 매니저:** `npm`
-* **주의사항:**
-* 패키지를 설치할 때는 반드시 `npm install` 명령어를 사용합니다.
-* 만약 실수로 다른 패키지 매니저를 사용하여 의도치 않은 Lock 파일(예: `yarn.lock`, `pnpm-lock.yaml`)이 생성되었다면, 해당 파일을 즉시 삭제 후 `npm install`을 다시 실행해 주세요.
-
+- **사용 매니저:** `npm`
+- **주의사항:**
+- 패키지를 설치할 때는 반드시 `npm install` 명령어를 사용합니다.
+- 만약 실수로 다른 패키지 매니저를 사용하여 의도치 않은 Lock 파일(예: `yarn.lock`, `pnpm-lock.yaml`)이 생성되었다면, 해당 파일을 즉시 삭제 후 `npm install`을 다시 실행해 주세요.
 
 ---
 
@@ -22,27 +21,23 @@
 
 JavaScript와 React의 글로벌 표준 네이밍 관례를 엄격하게 따릅니다. 이름만으로 역할과 의도를 명확히 파악할 수 있도록 직관적으로 작성합니다.
 
-* **변수 및 일반 함수명 (camelCase)**
-* 카멜케이스(camelCase): 첫 글자는 소문자로 시작하며, 이어지는 단어의 첫 글자는 대문자로 표기합니다.
-* **예시:** `userList`, `handleSubmit()`, `calculateDistance()`
+- **변수 및 일반 함수명 (camelCase)**
+- 카멜케이스(camelCase): 첫 글자는 소문자로 시작하며, 이어지는 단어의 첫 글자는 대문자로 표기합니다.
+- **예시:** `userList`, `handleSubmit()`, `calculateDistance()`
 
+- **상수 (CONSTANT_CASE)**
+- 변경되지 않는 전역 설정값은 모두 대문자와 언더바(`_`)를 사용합니다.
+- **예시:** `MAX_GROUP_SIZE = 7`, `MIN_MANNER_SCORE = 60`
 
-* **상수 (CONSTANT_CASE)**
-* 변경되지 않는 전역 설정값은 모두 대문자와 언더바(`_`)를 사용합니다.
-* **예시:** `MAX_GROUP_SIZE = 7`, `MIN_MANNER_SCORE = 60`
-
-
-* **React 컴포넌트 및 생성자/클래스명 (PascalCase)**
-* 화면을 구성하는 UI 컴포넌트나 커스텀 훅 파일명 등에 사용합니다.
-* **예시:** `function UserProfile() {}`, `const NavigationMenu = () => {}`
-
-
+- **React 컴포넌트 및 생성자/클래스명 (PascalCase)**
+- 화면을 구성하는 UI 컴포넌트나 커스텀 훅 파일명 등에 사용합니다.
+- **예시:** `function UserProfile() {}`, `const NavigationMenu = () => {}`
 
 ### 1.2. 주석 작성 규칙 (Comment Rules)
 
 코드의 가독성과 유지보수성을 높이기 위해 **JSDoc 스타일**을 표준으로 채택하여 주석을 작성합니다. 주요 모듈의 경우 `@author` 태그를 통해 담당자를 명시할 수 있습니다.
 
-* **컴포넌트 및 핵심 로직 시작 부분**
+- **컴포넌트 및 핵심 로직 시작 부분**
 
 ```javascript
 /**
@@ -51,25 +46,21 @@ JavaScript와 React의 글로벌 표준 네이밍 관례를 엄격하게 따릅�
  * @description 입력받은 인증 정보를 바탕으로 토큰을 발급받고 전역 상태를 업데이트합니다.
  */
 const useAuth = () => {
-    // 로직 구현...
+  // 로직 구현...
 };
-
 ```
 
-* **데이터 출처 명시**
-* 외부 API를 호출하는 함수 위, 또는 더미 데이터 파일 상단에 주석으로 출처를 밝힙니다.
-
-
+- **데이터 출처 명시**
+- 외부 API를 호출하는 함수 위, 또는 더미 데이터 파일 상단에 주석으로 출처를 밝힙니다.
 
 ```javascript
 // 데이터 출처: 서울특별시 지하철 승하차 승객수 (공공데이터포털 JSON API)
-
 ```
 
 ### 1.3. 코드 스타일 (Code Style)
 
-* **들여쓰기 (Indentation)**: 글로벌 웹 개발 표준에 맞춰 **Space 2칸**을 사용합니다. (Prettier 확장을 기본으로 사용 권장)
-* **타입 힌팅 (Type Hinting)**: TypeScript 대신 JavaScript를 사용하므로, 에러 방지와 협업 효율을 위해 JSDoc을 활용하여 매개변수(`@param`)와 반환값(`@returns`)의 타입을 명시합니다.
+- **들여쓰기 (Indentation)**: 글로벌 웹 개발 표준에 맞춰 **Space 2칸**을 사용합니다. (Prettier 확장을 기본으로 사용 권장)
+- **타입 힌팅 (Type Hinting)**: TypeScript 대신 JavaScript를 사용하므로, 에러 방지와 협업 효율을 위해 JSDoc을 활용하여 매개변수(`@param`)와 반환값(`@returns`)의 타입을 명시합니다.
 
 ```javascript
 /**
@@ -77,10 +68,9 @@ const useAuth = () => {
  * @param {Object} user - 사용자 정보 원본 객체
  * @returns {string} 포맷팅된 사용자 표시 이름
  */
-const formatUserName = (user) => { 
-    // 로직 구현... 
-}
-
+const formatUserName = (user) => {
+  // 로직 구현...
+};
 ```
 
 ---
@@ -91,11 +81,9 @@ const formatUserName = (user) => {
 
 버전 관리는 전적으로 Git에 위임하므로 **파일명에 날짜나 버전을 절대 기재하지 않습니다.** 파일명은 내부 모듈의 네이밍 컨벤션을 그대로 따라갑니다.
 
-* **확장자 구분 및 네이밍**:
-* **React UI 컴포넌트 (`.jsx`)**: 반드시 `PascalCase` 사용 (예: `UserProfile.jsx`, `Home.jsx`)
-* **순수 로직, 훅, 일반 함수 (`.js`)**: 반드시 `camelCase` 사용 (예: `useAuth.js`, `dateUtils.js`)
-
-
+- **확장자 구분 및 네이밍**:
+- **React UI 컴포넌트 (`.jsx`)**: 반드시 `PascalCase` 사용 (예: `UserProfile.jsx`, `Home.jsx`)
+- **순수 로직, 훅, 일반 함수 (`.js`)**: 반드시 `camelCase` 사용 (예: `useAuth.js`, `dateUtils.js`)
 
 ---
 
