@@ -1,0 +1,243 @@
+:root {
+  --primary-white: #f9fafb;
+  --gachon-blue: #014f9e;
+  --gachon-light-blue: #b8d6f4;
+  --middle-blue: #6998d1;
+  --mudang-red: #dc1b1b;
+  --gachon-orange: #f1ab23;
+
+  --text-main: #1f2a44;
+  --text-sub: #344054;
+  --border: #d0d5dd;
+  --placeholder: #98a2b3;
+  --cancel-bg: #eef1f5;
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.reservation-modal {
+  width: 550px;
+  max-height: 92vh;
+  background: white;
+  border-radius: 8px;
+  padding: 0 18px 18px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  color: #111827;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding-top: 17px;
+}
+
+.field-label,
+.section-label {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 14px;
+  margin-bottom: 7px;
+}
+
+.section-label {
+  margin-top: 24px;
+}
+
+.professor-title {
+  margin-top: 10px;
+}
+
+.field-label span {
+  color: var(--mudang-red);
+}
+
+input:not([type="checkbox"]),
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 10px;
+  font-size: 13px;
+  color: var(--text-main);
+  outline: none;
+  background-color: white;
+}
+
+input:not([type="checkbox"]) {
+  height: 34px;
+}
+
+textarea {
+  height: 58px;
+  resize: none;
+  line-height: 1.4;
+}
+
+textarea.reason {
+  height: 104px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--middle-blue);
+  box-shadow: 0 0 0 2px rgba(105, 152, 209, 0.15);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 3px;
+  margin-bottom: 9px;
+}
+
+.checkbox-row.single {
+  margin-top: 2px;
+}
+
+.checkbox-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-main);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.checkbox-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  border: 1px solid #7c8798;
+  border-radius: 1px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkbox-row input[type="checkbox"]:checked {
+  background-color: var(--gachon-blue);
+  border-color: var(--gachon-blue);
+}
+
+.checkbox-row input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -56%);
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.applicant-row input:nth-child(1) {
+  width: 84px;
+}
+
+.applicant-row input:nth-child(2) {
+  width: 84px;
+}
+
+.applicant-row input:nth-child(3) {
+  flex: 1;
+}
+
+.professor-row input:nth-child(1) {
+  width: 84px;
+}
+
+.professor-row input:nth-child(2) {
+  width: 250px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 0 2px;
+}
+
+.submit-btn {
+  flex: 1;
+  height: 34px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--gachon-blue);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #004486;
+}
+
+.cancel-btn {
+  width: 54px;
+  height: 34px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--cancel-bg);
+  color: var(--text-sub);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #e1e5eb;
+}
