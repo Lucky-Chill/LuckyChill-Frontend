@@ -1,7 +1,7 @@
-import AdminPage from "./pages/adminpage";
+import AppRouter from './AppRouter';
 
 function App() {
-  return <AdminPage />;
+  return <AppRouter />;
 }
 
 export default App;

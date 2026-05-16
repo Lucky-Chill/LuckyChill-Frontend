@@ -11,7 +11,7 @@ const MainLayout = ({ children }) => {
     <div className='flex h-screen w-full flex-col bg-primary-white'>
       <Header />
       <main className='flex-1 overflow-y-auto bg-primary-white'>
-        <div className='mx-auto w-full max-w-[1200px]'>{children}</div>
+        <div className='mx-auto h-full w-full max-w-[1200px] px-5 xl:px-0'>{children}</div>
       </main>
     </div>
   );

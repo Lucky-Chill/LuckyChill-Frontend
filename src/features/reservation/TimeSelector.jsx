@@ -3,23 +3,7 @@
  * @description 시작/종료 시간을 순차 선택하고 선택 범위를 하이라이트합니다.
  *              가로 스크롤 방식으로 표시됩니다.
  */
-
-const TIME_SLOTS = [
-  '09',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-];
+import { TIME_SLOTS } from './constants/timeSlots';
 
 /**
  * @param {Object} props
@@ -39,7 +23,7 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
       'shrink-0 flex-1 h-[86px] flex items-center justify-center text-sm font-semibold border-none cursor-pointer transition-all duration-150 first:rounded-l-lg last:rounded-r-lg ';
 
     if (reservedTimes.includes(time)) {
-      return base + 'bg-[#9CA3AF] text-white cursor-not-allowed';
+      return base + 'bg-disabled-gray text-white cursor-not-allowed';
     }
 
     const tNum = parseInt(time);
@@ -50,21 +34,21 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
       const lo = Math.min(sNum, eNum);
       const hi = Math.max(sNum, eNum);
       if (tNum >= lo && tNum <= hi) {
-        return base + 'bg-[#1D4ED8] text-white';
+        return base + 'bg-gachon-blue text-white';
       }
-      return base + 'bg-[#F59E0B] text-white hover:bg-[#D97706]';
+      return base + 'bg-gachon-orange text-white hover:bg-middle-blue';
     }
 
     if (sNum !== null && time === startTime) {
-      return base + 'bg-[#1D4ED8] text-white';
+      return base + 'bg-gachon-blue text-white';
     }
 
-    return base + 'bg-[#F59E0B] text-white hover:bg-[#D97706]';
+    return base + 'bg-gachon-orange text-white hover:bg-middle-blue';
   };
 
   return (
     <div>
-      <div className='mb-5 flex items-center gap-2 text-base font-bold text-[#111]'>
+      <div className='mb-5 flex items-center gap-2 text-base font-bold text-text-primary'>
         <svg
           width='20'
           height='20'
@@ -79,7 +63,7 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
         시간 선택
       </div>
 
-      <div className='mb-4 text-right text-sm text-[#2563EB]'>
+      <div className='mb-4 text-right text-sm text-gachon-blue'>
         시작 시간과 종료 시간을 클릭하세요
       </div>
 
@@ -96,17 +80,17 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
         ))}
       </div>
 
-      <div className='mt-5 flex items-center gap-6 text-sm text-[#555]'>
+      <div className='mt-5 flex items-center gap-6 text-sm text-text-secondary'>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#F59E0B]' />
+          <div className='size-4 rounded-lg bg-gachon-orange' />
           <span>예약가능</span>
         </div>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#1D4ED8]' />
+          <div className='size-4 rounded-lg bg-gachon-blue' />
           <span>선택됨</span>
         </div>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#6B7280]' />
+          <div className='size-4 rounded-lg bg-disabled-gray' />
           <span>예약불가</span>
         </div>
       </div>
