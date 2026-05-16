@@ -9,13 +9,13 @@
  */
 const RoomInfo = ({ room }) => {
   return (
-    <div className="mx-6 my-4 p-4 bg-[#fafafa] rounded-lg border border-[#f0f0f0]">
-      <div className="text-[13px] font-bold text-[#111] mb-2.5">강의실 정보</div>
-      <div className="flex justify-between text-xs text-[#555] mb-1.5">
+    <div className='mt-8 rounded-lg bg-white px-8 py-6'>
+      <div className='mb-6 text-base font-bold text-[#111]'>강의실 정보</div>
+      <div className='mb-5 grid grid-cols-2 text-sm text-[#555]'>
         <span>위치: {room.location}</span>
         <span>수용 인원: {room.capacity}명</span>
       </div>
-      <div className="text-xs text-[#555]">
+      <div className='text-sm text-[#555]'>
         <span>장비: {room.equipment}</span>
       </div>
     </div>

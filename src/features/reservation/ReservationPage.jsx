@@ -10,7 +10,22 @@ import RoomInfo from './RoomInfo';
 import ReservationButtons from './ReservationButtons';
 import ReservationFormModal from '../../components/ReservationFormModal';
 
-const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
+const TIME_SLOTS = [
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+];
 
 const ROOM_DATA = {
   name: '강의실 201',
@@ -90,14 +105,14 @@ const ReservationPage = () => {
   const canReserve = selectedDate !== null && startTime !== null && endTime !== null;
 
   return (
-    <div className="max-w-[860px] mx-auto bg-white rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
+    <div className='w-full pt-12 pb-16'>
       {/* Room Header */}
-      <div className="px-6 py-[18px] text-base font-bold text-[#111] border-b border-[#f0f0f0]">
+      <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
         {ROOM_DATA.name} 예약
-      </div>
+      </h1>
 
       {/* Room Image */}
-      <div className="mx-6 mt-4 h-[220px] bg-[#e8e8e8] rounded-lg overflow-hidden flex items-center justify-center text-[#bbb] text-sm">
+      <div className='mt-10 flex h-[360px] items-center justify-center overflow-hidden rounded-lg bg-white text-sm text-[#bbb]'>
         강의실 이미지
       </div>
 
@@ -105,7 +120,7 @@ const ReservationPage = () => {
       <RoomInfo room={ROOM_DATA} />
 
       {/* Calendar Section */}
-      <div className="px-6 py-4">
+      <div className='mt-8 rounded-lg bg-white px-8 py-8'>
         <Calendar
           disabledDates={ROOM_DATA.disabledDates}
           reservedDates={ROOM_DATA.reservedDates}
@@ -115,10 +130,10 @@ const ReservationPage = () => {
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-[#f0f0f0] mx-6" />
+      <div className='h-px bg-[#f0f0f0]' />
 
       {/* Time Section */}
-      <div className="px-6 py-4">
+      <div className='rounded-lg bg-white px-8 py-8'>
         <TimeSelector
           reservedTimes={ROOM_DATA.reservedTimes}
           startTime={startTime}

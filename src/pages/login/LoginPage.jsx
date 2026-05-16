@@ -8,7 +8,7 @@ function LoginPage() {
   return (
     <main className='flex min-h-svh items-center justify-center bg-primary-white p-6'>
       <section
-        className='flex w-full max-w-[486px] flex-col rounded-[18px] bg-white px-9 pt-7 pb-8 shadow-[0_24px_38px_-12px_rgb(0_0_0_/_0.24)] max-[520px]:px-6 max-[520px]:pt-7 max-[520px]:pb-7'
+        className='flex w-full max-w-[486px] flex-col rounded-lg bg-white px-9 pt-7 pb-8 shadow-[0_24px_38px_-12px_rgb(0_0_0_/_0.24)] max-[520px]:px-6 max-[520px]:pt-7 max-[520px]:pb-7'
         aria-labelledby='login-title'
       >
         <LoginHeader />

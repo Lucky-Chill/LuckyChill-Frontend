@@ -31,17 +31,17 @@ function HomeContent() {
   const classrooms = CLASSROOMS_BY_FLOOR[activeFloor];
 
   return (
-    <section className='mx-auto w-[1200px] pt-12 pb-16'>
-      <h1 className='m-0 text-[44px] leading-[1.15] font-extrabold tracking-normal text-[#111827]'>
+    <section className='pt-12 pb-16'>
+      <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
         강의실 예약
       </h1>
 
-      <div className='mt-20'>
+      <div className='mt-14'>
         <FloorTabs activeFloor={activeFloor} onFloorChange={setActiveFloor} />
       </div>
 
-      <div className='mt-7 border-t border-[#e5e7eb] pt-11'>
-        <div className='grid grid-cols-[repeat(5,165px)] justify-between gap-y-8'>
+      <div className='mt-7 min-h-[536px] border-t border-[#e5e7eb] pt-10'>
+        <div className='grid grid-cols-[repeat(5,200px)] justify-between gap-y-10'>
           {classrooms.map((classroom) => (
             <ClassroomCard
               key={classroom.id}

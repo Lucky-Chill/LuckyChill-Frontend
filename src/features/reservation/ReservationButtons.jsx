@@ -9,11 +9,11 @@
  */
 const ReservationButtons = ({ canReserve, onCancel, onReserve }) => {
   return (
-    <div className="flex gap-2.5 px-6 pt-4 pb-5 border-t border-[#f0f0f0]">
+    <div className='flex gap-3 px-8 pt-6 pb-8'>
       <button
         onClick={onReserve}
         disabled={!canReserve}
-        className={`flex-1 h-11 border-none rounded-lg text-sm font-semibold transition-all duration-200 ${
+        className={`h-11 flex-1 rounded-lg border-none text-sm font-semibold transition-all duration-200 ${
           canReserve
             ? 'bg-[#1D4ED8] text-white cursor-pointer hover:bg-[#1E40AF]'
             : 'bg-[#D1D5DB] text-[#9CA3AF] cursor-not-allowed'
@@ -23,7 +23,7 @@ const ReservationButtons = ({ canReserve, onCancel, onReserve }) => {
       </button>
       <button
         onClick={onCancel}
-        className="w-20 h-11 bg-white text-[#555] border border-[#D1D5DB] rounded-lg text-sm font-medium cursor-pointer hover:bg-[#f5f5f5] transition-colors duration-150"
+        className='h-11 w-28 cursor-pointer rounded-lg border border-[#D1D5DB] bg-white text-sm font-medium text-[#555] transition-colors duration-150 hover:bg-[#f5f5f5]'
       >
         취소
       </button>
