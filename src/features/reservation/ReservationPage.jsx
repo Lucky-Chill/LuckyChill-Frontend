@@ -14,7 +14,22 @@ import { getClassroom, getUnavailableDates, getSchedule } from '../../apis/class
 // 추후 라우트 파라미터(:classroomId)로 교체
 const CLASSROOM_ID = 'classroom-uuid';
 
-const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
+const TIME_SLOTS = [
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+];
 
 /**
  * 강의실 예약 페이지 컴포넌트
@@ -35,8 +50,7 @@ const ReservationPage = () => {
    * @param {string[]} dateStrings
    * @returns {number[]}
    */
-  const parseDayNumbers = (dateStrings) =>
-    dateStrings.map((d) => parseInt(d.split('-')[2], 10));
+  const parseDayNumbers = (dateStrings) => dateStrings.map((d) => parseInt(d.split('-')[2], 10));
 
   // 강의실 정보 + 현재 월 불가 날짜 초기 로드
   useEffect(() => {
@@ -138,9 +152,6 @@ const ReservationPage = () => {
       <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
         {roomData?.name ?? '강의실 201'} 예약
       </h1>
-      <div className="px-6 py-[18px] text-base font-bold text-[#111] border-b border-[#f0f0f0]">
-        {roomData?.name ?? '강의실 201'} 예약
-      </div>
 
       {/* Room Image */}
       <div className='mt-10 flex h-[360px] items-center justify-center overflow-hidden rounded-lg bg-white text-sm text-[#bbb]'>
