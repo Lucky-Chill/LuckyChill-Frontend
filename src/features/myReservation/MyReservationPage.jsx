@@ -15,20 +15,39 @@ const STATUS_LABEL = {
 
 /** 예약 상태별 배지 스타일 */
 const STATUS_CLASS = {
-  PENDING: 'bg-amber-100 text-amber-700',
-  APPROVED: 'bg-green-100 text-green-700',
-  REJECTED: 'bg-red-100 text-red-700',
-  CANCELLED: 'bg-gray-100 text-gray-500',
+  PENDING: 'bg-mudang-red-tint text-mudang-red',
+  APPROVED: 'bg-success-green-tint text-success-green',
+  REJECTED: 'bg-mudang-red-tint text-mudang-red',
+  CANCELLED: 'bg-surface-soft text-text-secondary',
 };
 
 /**
- * 날짜·시간을 읽기 쉬운 형식으로 포맷
- * @param {string} date - "YYYY-MM-DD"
- * @param {string} start - "HH:mm"
- * @param {string} end   - "HH:mm"
+ * ISO 날짜 문자열을 한국어 날짜로 포맷합니다.
+ * @param {string} date
  * @returns {string}
  */
-const formatDateTime = (date, start, end) => `${date} · ${start} ~ ${end}`;
+const formatReservationDate = (date) => {
+  if (!date) return '-';
+
+  const [year, month, day] = date.split('-');
+  return `${year}년 ${month}월 ${day}일`;
+};
+
+/**
+ * 예약 시간을 화면 표시 형식으로 포맷합니다.
+ * @param {string} start
+ * @param {string} end
+ * @returns {string}
+ */
+const formatReservationTime = (start, end) => {
+  if (!start || !end) return '-';
+
+  const startHour = Number(start.slice(0, 2));
+  const endHour = Number(end.slice(0, 2));
+  const duration = Math.max(endHour - startHour, 0);
+
+  return `${start} - ${end} (${duration}시간)`;
+};
 
 const MyReservationPage = () => {
   const { email, reservations, isLoading, error } = useMyReservations();
@@ -75,19 +94,88 @@ const MyReservationPage = () => {
 /**
  * 개별 예약 정보 카드
  * @param {Object} props
- * @param {Object} props.item - 예약 데이터 ({ id, classroomName, reservationDate, startTime, endTime, title, status })
+ * @param {Object} props.item - 예약 데이터
+ * @param {string} props.item.classroomName - 강의실 이름
+ * @param {string} props.item.reservationDate - 예약 날짜
+ * @param {string} props.item.startTime - 시작 시간
+ * @param {string} props.item.endTime - 종료 시간
+ * @param {string} props.item.status - 예약 상태
+ * @param {string} [props.item.applicantEmail] - 신청자 이메일
+ * @param {string} [props.item.email] - 신청자 이메일 대체 필드
+ * @param {string} [props.item.floor] - 층 정보
  */
 const ReservationCard = ({ item }) => (
-  <li className='flex items-center justify-between rounded-xl border border-border-muted bg-white px-6 py-5 shadow-[0_1px_4px_rgba(0,0,0,0.06)]'>
-    <div className='flex flex-col gap-1'>
-      <span className='text-base font-bold text-text-primary'>{item.classroomName}</span>
-      <span className='text-sm text-text-primary'>{item.title}</span>
-      <span className='text-xs text-text-muted'>
-        {formatDateTime(item.reservationDate, item.startTime, item.endTime)}
-      </span>
+  <li className='flex min-h-[118px] items-center justify-between rounded-lg border border-border-default bg-white px-7 py-5'>
+    <div>
+      <h2 className='mb-3.5 text-base font-bold text-text-primary'>{item.classroomName}</h2>
+
+      <div className='flex flex-wrap items-start gap-x-7 gap-y-1.5 text-xs leading-[1.45] text-text-secondary'>
+        <span className='flex items-start gap-1.5'>
+          <svg
+            className='mt-0.5 size-4 shrink-0'
+            viewBox='0 0 24 24'
+            fill='none'
+            aria-hidden='true'
+          >
+            <path
+              d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+          </svg>
+          <span>
+            신청자:
+            <br />
+            {item.applicantEmail ?? item.email ?? 'student5@gachon.ac.kr'}
+          </span>
+        </span>
+
+        <span className='flex items-center gap-1.5'>
+          <svg className='size-4 shrink-0' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+            <path
+              d='M8 2v4M16 2v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+          </svg>
+          {formatReservationDate(item.reservationDate)}
+        </span>
+
+        <span className='flex items-center gap-1.5'>
+          <svg className='size-4 shrink-0' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+            <path
+              d='M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+            <circle cx='12' cy='10' r='3' stroke='currentColor' strokeWidth='2' />
+          </svg>
+          {item.floor ?? '6층'}
+        </span>
+
+        <span className='flex basis-full items-center gap-1.5'>
+          <svg className='size-4 shrink-0' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+            <path
+              d='M12 6v6l4 2M22 12A10 10 0 1 1 2 12a10 10 0 0 1 20 0Z'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+          </svg>
+          {formatReservationTime(item.startTime, item.endTime)}
+        </span>
+      </div>
     </div>
+
     <span
-      className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASS[item.status] ?? 'bg-gray-100 text-gray-500'}`}
+      className={`shrink-0 rounded-full px-5 py-2 text-lg font-bold ${STATUS_CLASS[item.status] ?? 'bg-surface-soft text-text-secondary'}`}
     >
       {STATUS_LABEL[item.status] ?? item.status}
     </span>

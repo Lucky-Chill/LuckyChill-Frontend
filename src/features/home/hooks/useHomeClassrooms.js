@@ -3,8 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { CLASSROOMS_BY_FLOOR } from '../../classroom/constants/classrooms';
 
 /**
+ * @typedef {Object} Classroom
+ * @property {string} id - 강의실 ID
+ * @property {string} roomName - 강의실 표시 이름
+ * @property {string} floor - 층 정보
+ * @property {number} capacity - 수용 인원
+ * @property {string} equipment - 보유 장비
+ */
+
+/**
  * 홈 화면 강의실 목록 상태와 이동을 관리합니다.
- * @returns {{ activeFloor: string, classrooms: Array, setActiveFloor: Function, handleClassroomClick: Function }}
+ * @returns {{
+ *   activeFloor: string,
+ *   classrooms: Classroom[],
+ *   setActiveFloor: (floor: string) => void,
+ *   handleClassroomClick: (classroom: Classroom) => void
+ * }}
  */
 const useHomeClassrooms = () => {
   const navigate = useNavigate();

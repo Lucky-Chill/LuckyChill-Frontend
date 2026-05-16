@@ -7,6 +7,41 @@ import { TIME_SLOTS } from '../constants/timeSlots';
 const DEFAULT_CLASSROOM_ID = 'classroom-301';
 
 /**
+ * @typedef {Object} RoomInfoData
+ * @property {string|number} location - 강의실 위치
+ * @property {string|number} capacity - 수용 인원
+ * @property {string} equipment - 장비 목록
+ */
+
+/**
+ * @typedef {Object} ReservationData
+ * @property {string} classroomId - 강의실 ID
+ * @property {string|null} reservationDate - 예약 날짜
+ * @property {string} startTime - 시작 시간
+ * @property {string} endTime - 종료 시간
+ */
+
+/**
+ * @typedef {Object} UseReservationPageResult
+ * @property {string} roomName - 강의실 이름
+ * @property {RoomInfoData} room - 강의실 정보
+ * @property {number[]} unavailableDates - 예약 불가 날짜 목록
+ * @property {string[]} reservedTimes - 예약 불가 시간 목록
+ * @property {string|null} selectedDateStr - 선택 날짜 문자열
+ * @property {string|null} startTime - 선택 시작 시간
+ * @property {string|null} endTime - 선택 종료 시간
+ * @property {boolean} canReserve - 예약 가능 여부
+ * @property {boolean} isModalOpen - 예약 신청 모달 표시 여부
+ * @property {ReservationData} reservationData - 예약 신청 기본 데이터
+ * @property {(year: number, month: number) => void} handleMonthChange - 월 변경 핸들러
+ * @property {(date: number, year: number, month: number) => void} handleDateSelect - 날짜 선택 핸들러
+ * @property {(time: string) => void} handleTimeSelect - 시간 선택 핸들러
+ * @property {() => void} handleCancel - 선택 취소 핸들러
+ * @property {() => void} openReservationModal - 모달 열기 핸들러
+ * @property {() => void} closeReservationModal - 모달 닫기 핸들러
+ */
+
+/**
  * "YYYY-MM-DD" 배열에서 일(day) 숫자만 추출합니다.
  * @param {string[]} dateStrings
  * @returns {number[]}
@@ -26,7 +61,7 @@ const formatDateString = (date, year, month) =>
 
 /**
  * 예약 페이지의 API 조회, 날짜/시간 선택, 모달 상태를 관리합니다.
- * @returns {Object}
+ * @returns {UseReservationPageResult}
  */
 const useReservationPage = () => {
   const { classroomId = DEFAULT_CLASSROOM_ID } = useParams();
