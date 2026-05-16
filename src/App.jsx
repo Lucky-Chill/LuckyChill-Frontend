@@ -1,11 +1,12 @@
-/**
- * 전체 라우팅 및 Provider 설정
- * @description 현재는 강의실 예약 페이지 단일 진입점으로 동작합니다.
- */
-import Reservation from './pages/Reservation';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './router';
 
 function App() {
-  return <Reservation />;
+  return (
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  );
 }
 
 export default App;
