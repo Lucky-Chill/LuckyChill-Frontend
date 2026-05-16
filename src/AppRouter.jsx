@@ -1,14 +1,14 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/login/LoginPage';
-import ReservationPage from './features/reservation/ReservationPage';
+import Reservation from './pages/Reservation';
 
 function AppRouter() {
   return (
     <Routes>
       <Route path='/' element={<LoginPage />} />
       <Route path='/login' element={<LoginPage />} />
+      <Route path='/reservation' element={<Reservation />} />
       <Route path='*' element={<Navigate to='/' replace />} />
-      <Route path='/reservation' element={<ReservationPage />} />
     </Routes>
   );
 }
