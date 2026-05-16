@@ -8,10 +8,10 @@ import Header from '../components/common/Header';
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="w-full h-screen flex flex-col bg-[#f0f0f0]">
+    <div className='flex h-screen w-full flex-col bg-primary-white'>
       <Header />
-      <main className="flex-1 overflow-y-auto bg-[#f0f0f0]">
-        <div className="p-5">{children}</div>
+      <main className='flex-1 overflow-y-auto bg-primary-white'>
+        <div className='mx-auto w-full max-w-[1200px]'>{children}</div>
       </main>
     </div>
   );

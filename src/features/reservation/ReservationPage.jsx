@@ -11,6 +11,23 @@ import ReservationButtons from './ReservationButtons';
 import ReservationFormModal from '../../components/ReservationFormModal';
 import { getClassroom, getUnavailableDates, getSchedule } from '../../apis/classroomApi';
 
+const TIME_SLOTS = [
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+];
+=======
 // 추후 라우트 파라미터(:classroomId)로 교체
 const CLASSROOM_ID = 'classroom-uuid';
 
@@ -133,14 +150,18 @@ const ReservationPage = () => {
   const canReserve = selectedDate !== null && startTime !== null && endTime !== null;
 
   return (
-    <div className="max-w-[860px] mx-auto bg-white rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
+    <div className='w-full pt-12 pb-16'>
       {/* Room Header */}
+      <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
+        {ROOM_DATA.name} 예약
+      </h1>
+=======
       <div className="px-6 py-[18px] text-base font-bold text-[#111] border-b border-[#f0f0f0]">
         {roomData?.name ?? '강의실 201'} 예약
       </div>
 
       {/* Room Image */}
-      <div className="mx-6 mt-4 h-[220px] bg-[#e8e8e8] rounded-lg overflow-hidden flex items-center justify-center text-[#bbb] text-sm">
+      <div className='mt-10 flex h-[360px] items-center justify-center overflow-hidden rounded-lg bg-white text-sm text-[#bbb]'>
         강의실 이미지
       </div>
 
@@ -154,7 +175,7 @@ const ReservationPage = () => {
       />
 
       {/* Calendar Section */}
-      <div className="px-6 py-4">
+      <div className='mt-8 rounded-lg bg-white px-8 py-8'>
         <Calendar
           disabledDates={unavailableDates}
           reservedDates={[]}
@@ -165,10 +186,10 @@ const ReservationPage = () => {
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-[#f0f0f0] mx-6" />
+      <div className='h-px bg-[#f0f0f0]' />
 
       {/* Time Section */}
-      <div className="px-6 py-4">
+      <div className='rounded-lg bg-white px-8 py-8'>
         <TimeSelector
           reservedTimes={reservedTimes}
           startTime={startTime}

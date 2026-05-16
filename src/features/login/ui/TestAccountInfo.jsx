@@ -5,7 +5,7 @@ const TEST_ACCOUNT = {
 
 function TestAccountInfo() {
   return (
-    <aside className='mt-4 rounded-[9px] bg-primary-white px-5 py-4 text-center'>
+    <aside className='mt-4 rounded-lg bg-primary-white px-5 py-4 text-center'>
       <p className='m-0 text-sm leading-5 font-medium text-[#6b7280]'>{TEST_ACCOUNT.label}</p>
       <p className='m-0 mt-1 text-sm leading-5 text-[#6b7280]'>{TEST_ACCOUNT.user}</p>
     </aside>

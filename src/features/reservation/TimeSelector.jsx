@@ -4,7 +4,22 @@
  *              가로 스크롤 방식으로 표시됩니다.
  */
 
-const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
+const TIME_SLOTS = [
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+];
 
 /**
  * @param {Object} props
@@ -21,7 +36,7 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
    */
   const getTimeClass = (time) => {
     const base =
-      'shrink-0 w-11 h-11 flex items-center justify-center text-xs font-semibold border-none rounded-md cursor-pointer transition-all duration-150 ';
+      'shrink-0 flex-1 h-[86px] flex items-center justify-center text-sm font-semibold border-none cursor-pointer transition-all duration-150 first:rounded-l-lg last:rounded-r-lg ';
 
     if (reservedTimes.includes(time)) {
       return base + 'bg-[#9CA3AF] text-white cursor-not-allowed';
@@ -49,19 +64,26 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
 
   return (
     <div>
-      <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#111] mb-2">
-        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
+      <div className='mb-5 flex items-center gap-2 text-base font-bold text-[#111]'>
+        <svg
+          width='20'
+          height='20'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          viewBox='0 0 24 24'
+        >
+          <circle cx='12' cy='12' r='10' />
+          <polyline points='12 6 12 12 16 14' />
         </svg>
         시간 선택
       </div>
 
-      <div className="text-[11px] text-[#2563EB] text-right mb-2">
+      <div className='mb-4 text-right text-sm text-[#2563EB]'>
         시작 시간과 종료 시간을 클릭하세요
       </div>
 
-      <div className="flex gap-1 overflow-x-auto pb-1">
+      <div className='flex overflow-hidden rounded-lg'>
         {TIME_SLOTS.map((time) => (
           <button
             key={time}
@@ -74,17 +96,17 @@ const TimeSelector = ({ reservedTimes, startTime, endTime, onTimeSelect }) => {
         ))}
       </div>
 
-      <div className="flex items-center gap-3.5 mt-2.5 text-[11px] text-[#555]">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
+      <div className='mt-5 flex items-center gap-6 text-sm text-[#555]'>
+        <div className='flex items-center gap-2'>
+          <div className='size-4 rounded-lg bg-[#F59E0B]' />
           <span>예약가능</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-[#1D4ED8]" />
+        <div className='flex items-center gap-2'>
+          <div className='size-4 rounded-lg bg-[#1D4ED8]' />
           <span>선택됨</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-[#6B7280]" />
+        <div className='flex items-center gap-2'>
+          <div className='size-4 rounded-lg bg-[#6B7280]' />
           <span>예약불가</span>
         </div>
       </div>
