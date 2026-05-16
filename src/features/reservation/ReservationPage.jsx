@@ -1,14 +1,15 @@
 /**
  * 강의실 예약 기능의 메인 컴포넌트
  * @description 예약 상태(날짜, 시간)를 관리하고 하위 컴포넌트를 조합합니다.
- *              HTML 원본 디자인(max-width 860px, 섹션별 padding)을 기준으로 레이아웃됩니다.
+ *              화면 1 → 화면 2 흐름: 날짜·시간 선택 후 ReservationFormModal로 예약 정보 전달.
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from './Calendar';
 import TimeSelector from './TimeSelector';
 import RoomInfo from './RoomInfo';
 import ReservationButtons from './ReservationButtons';
 import ReservationFormModal from '../../components/ReservationFormModal';
+import { getClassroom, getUnavailableDates, getSchedule } from '../../apis/classroomApi';
 
 const TIME_SLOTS = [
   '09',
@@ -26,42 +27,89 @@ const TIME_SLOTS = [
   '21',
   '22',
 ];
+=======
+// 추후 라우트 파라미터(:classroomId)로 교체
+const CLASSROOM_ID = 'classroom-uuid';
 
-const ROOM_DATA = {
-  name: '강의실 201',
-  location: '2층',
-  capacity: 30,
-  equipment: '빔프로젝터, 화이트보드',
-  disabledDates: [13],
-  reservedDates: [16],
-  reservedTimes: [],
-};
+const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
 
 /**
  * 강의실 예약 페이지 컴포넌트
  * @description 날짜·시간 선택 상태를 통합 관리하며, 예약 가능 여부를 판단합니다.
  */
 const ReservationPage = () => {
+  const [roomData, setRoomData] = useState(null);
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [reservedTimes, setReservedTimes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDateStr, setSelectedDateStr] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   /**
-   * 날짜 선택 핸들러 — 날짜 변경 시 시간 선택 초기화
-   * @param {number} date - 선택된 날짜
+   * "YYYY-MM-DD" 배열에서 일(day) 숫자만 추출
+   * @param {string[]} dateStrings
+   * @returns {number[]}
    */
-  const handleDateSelect = (date) => {
+  const parseDayNumbers = (dateStrings) =>
+    dateStrings.map((d) => parseInt(d.split('-')[2], 10));
+
+  // 강의실 정보 + 현재 월 불가 날짜 초기 로드
+  useEffect(() => {
+    const today = new Date();
+    Promise.all([
+      getClassroom(CLASSROOM_ID),
+      getUnavailableDates(CLASSROOM_ID, today.getFullYear(), today.getMonth() + 1),
+    ])
+      .then(([classroomRes, datesRes]) => {
+        setRoomData(classroomRes.data);
+        setUnavailableDates(parseDayNumbers(datesRes.data.unavailableDates));
+      })
+      .catch(console.error);
+  }, []);
+
+  /**
+   * 월 변경 시 해당 월의 불가 날짜 재조회
+   * @param {number} year
+   * @param {number} month - 1-based
+   */
+  const handleMonthChange = (year, month) => {
+    getUnavailableDates(CLASSROOM_ID, year, month)
+      .then((res) => setUnavailableDates(parseDayNumbers(res.data.unavailableDates)))
+      .catch(console.error);
+  };
+
+  /**
+   * 날짜 선택 시 해당 날짜의 시간 슬롯 상태 조회
+   * @param {number} date - 일(day) 숫자
+   * @param {number} year
+   * @param {number} month - 1-based
+   */
+  const handleDateSelect = (date, year, month) => {
     setSelectedDate(date);
     setStartTime(null);
     setEndTime(null);
+
+    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+    setSelectedDateStr(dateStr);
+
+    getSchedule(CLASSROOM_ID, dateStr)
+      .then((res) => {
+        // UNAVAILABLE 슬롯의 startTime 시간(HH)만 추출 → "09:00" → "09"
+        const reserved = res.data.timeSlots
+          .filter((slot) => slot.status === 'UNAVAILABLE')
+          .map((slot) => slot.startTime.slice(0, 2));
+        setReservedTimes(reserved);
+      })
+      .catch(console.error);
   };
 
   /**
    * 시간 슬롯 선택 핸들러
-   * startTime+endTime 모두 있거나 startTime만 없을 때 → 새 startTime 설정
+   * startTime+endTime 모두 있거나 startTime이 없을 때 → 새 startTime 설정
    * startTime만 있을 때 → endTime 설정 (예약불가 범위 포함 시 alert)
-   * @param {string} time - 선택된 시간 슬롯 ("09" ~ "22")
+   * @param {string} time - "09" ~ "22"
    */
   const handleTimeSelect = (time) => {
     if (!startTime || (startTime && endTime)) {
@@ -81,7 +129,7 @@ const ReservationPage = () => {
 
     const blocked = TIME_SLOTS.filter((ts) => {
       const n = parseInt(ts);
-      return n >= s && n <= e && ROOM_DATA.reservedTimes.includes(ts);
+      return n >= s && n <= e && reservedTimes.includes(ts);
     });
 
     if (blocked.length > 0) {
@@ -94,12 +142,9 @@ const ReservationPage = () => {
 
   const handleCancel = () => {
     setSelectedDate(null);
+    setSelectedDateStr(null);
     setStartTime(null);
     setEndTime(null);
-  };
-
-  const handleReserve = () => {
-    setIsModalOpen(true);
   };
 
   const canReserve = selectedDate !== null && startTime !== null && endTime !== null;
@@ -110,6 +155,10 @@ const ReservationPage = () => {
       <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
         {ROOM_DATA.name} 예약
       </h1>
+=======
+      <div className="px-6 py-[18px] text-base font-bold text-[#111] border-b border-[#f0f0f0]">
+        {roomData?.name ?? '강의실 201'} 예약
+      </div>
 
       {/* Room Image */}
       <div className='mt-10 flex h-[360px] items-center justify-center overflow-hidden rounded-lg bg-white text-sm text-[#bbb]'>
@@ -117,15 +166,22 @@ const ReservationPage = () => {
       </div>
 
       {/* Room Info */}
-      <RoomInfo room={ROOM_DATA} />
+      <RoomInfo
+        room={{
+          location: roomData?.floor ?? '-',
+          capacity: roomData?.capacity ?? '-',
+          equipment: roomData?.equipment?.join(', ') ?? '-',
+        }}
+      />
 
       {/* Calendar Section */}
       <div className='mt-8 rounded-lg bg-white px-8 py-8'>
         <Calendar
-          disabledDates={ROOM_DATA.disabledDates}
-          reservedDates={ROOM_DATA.reservedDates}
+          disabledDates={unavailableDates}
+          reservedDates={[]}
           selectedDate={selectedDate}
           onDateSelect={handleDateSelect}
+          onMonthChange={handleMonthChange}
         />
       </div>
 
@@ -135,7 +191,7 @@ const ReservationPage = () => {
       {/* Time Section */}
       <div className='rounded-lg bg-white px-8 py-8'>
         <TimeSelector
-          reservedTimes={ROOM_DATA.reservedTimes}
+          reservedTimes={reservedTimes}
           startTime={startTime}
           endTime={endTime}
           onTimeSelect={handleTimeSelect}
@@ -146,10 +202,21 @@ const ReservationPage = () => {
       <ReservationButtons
         canReserve={canReserve}
         onCancel={handleCancel}
-        onReserve={handleReserve}
+        onReserve={() => setIsModalOpen(true)}
       />
 
-      {isModalOpen && <ReservationFormModal onClose={() => setIsModalOpen(false)} />}
+      {/* 화면 2: 예약 신청서 모달 — 화면 1에서 선택한 정보 전달 */}
+      {isModalOpen && (
+        <ReservationFormModal
+          onClose={() => setIsModalOpen(false)}
+          reservationData={{
+            classroomId: CLASSROOM_ID,
+            reservationDate: selectedDateStr,
+            startTime: `${startTime}:00`,
+            endTime: `${endTime}:00`,
+          }}
+        />
+      )}
     </div>
   );
 };

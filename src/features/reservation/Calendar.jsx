@@ -20,9 +20,10 @@ const WEEK_DAYS = [
  * @param {number[]} props.disabledDates - 예약 불가 날짜 배열
  * @param {number[]} props.reservedDates - 이미 예약된 날짜 배열
  * @param {number|null} props.selectedDate - 현재 선택된 날짜
- * @param {(date: number) => void} props.onDateSelect - 날짜 선택 콜백
+ * @param {(date: number, year: number, month: number) => void} props.onDateSelect - 날짜 선택 콜백 (month은 1-based)
+ * @param {(year: number, month: number) => void} [props.onMonthChange] - 월 변경 콜백 (month은 1-based)
  */
-const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect }) => {
+const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, onMonthChange }) => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -39,21 +40,19 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect }) 
     today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === date;
 
   const handlePrevMonth = () => {
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear((y) => y - 1);
-    } else {
-      setViewMonth((m) => m - 1);
-    }
+    const newYear = viewMonth === 0 ? viewYear - 1 : viewYear;
+    const newMonth = viewMonth === 0 ? 11 : viewMonth - 1;
+    setViewYear(newYear);
+    setViewMonth(newMonth);
+    onMonthChange?.(newYear, newMonth + 1);
   };
 
   const handleNextMonth = () => {
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear((y) => y + 1);
-    } else {
-      setViewMonth((m) => m + 1);
-    }
+    const newYear = viewMonth === 11 ? viewYear + 1 : viewYear;
+    const newMonth = viewMonth === 11 ? 0 : viewMonth + 1;
+    setViewYear(newYear);
+    setViewMonth(newMonth);
+    onMonthChange?.(newYear, newMonth + 1);
   };
 
   const cells = [
@@ -137,7 +136,7 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect }) 
               key={date}
               className={getDateClass(date)}
               disabled={disabledDates.includes(date) || reservedDates.includes(date)}
-              onClick={() => onDateSelect(date)}
+              onClick={() => onDateSelect(date, viewYear, viewMonth + 1)}
             >
               {date}
             </button>
