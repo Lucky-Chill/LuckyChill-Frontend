@@ -15,15 +15,15 @@ const ReservationButtons = ({ canReserve, onCancel, onReserve }) => {
         disabled={!canReserve}
         className={`h-11 flex-1 rounded-lg border-none text-sm font-semibold transition-all duration-200 ${
           canReserve
-            ? 'bg-[#1D4ED8] text-white cursor-pointer hover:bg-[#1E40AF]'
-            : 'bg-[#D1D5DB] text-[#9CA3AF] cursor-not-allowed'
+            ? 'bg-gachon-blue text-white cursor-pointer hover:bg-middle-blue'
+            : 'bg-border-default text-disabled-gray cursor-not-allowed'
         }`}
       >
         예약하기
       </button>
       <button
         onClick={onCancel}
-        className='h-11 w-28 cursor-pointer rounded-lg border border-[#D1D5DB] bg-white text-sm font-medium text-[#555] transition-colors duration-150 hover:bg-[#f5f5f5]'
+        className='h-11 w-28 cursor-pointer rounded-lg border border-border-default bg-white text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-soft'
       >
         취소
       </button>

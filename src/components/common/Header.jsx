@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bellIcon from '../../assets/alarm.svg';
+import logoIcon from '../../assets/logo.svg';
 import profileIcon from '../../assets/profile.svg';
 import ProfilePopover from './ProfilePopover';
 
@@ -29,24 +29,17 @@ const Header = () => {
   };
 
   return (
-    <header className='flex h-14 shrink-0 items-center justify-between border-b border-[#e0e0e0] bg-white px-5'>
+    <header className='flex h-20 shrink-0 items-center justify-between border-b border-border-default bg-white px-6'>
       <button
-        className='cursor-pointer border-none bg-transparent p-0 text-base font-bold text-[#2563EB]'
+        className='flex cursor-pointer items-center gap-2.5 border-none bg-transparent p-0 text-2xl font-bold text-gachon-blue'
         type='button'
         onClick={() => navigate('/home')}
       >
+        <img src={logoIcon} alt='' className='size-15 shrink-0' aria-hidden='true' />
         컴퓨터공학과
       </button>
 
-      <div className='flex items-center gap-3'>
-        <button
-          className='relative cursor-pointer border-none bg-transparent p-1'
-          aria-label='알림'
-        >
-          <img src={bellIcon} alt='알림' className='h-6 w-6' />
-          <span className='absolute right-0.5 top-0.5 h-[7px] w-[7px]' />
-        </button>
-
+      <div className='flex items-center'>
         {/* 프로필 아이콘 + 팝오버 래퍼 */}
         <div className='relative' ref={profileWrapperRef}>
           <button
@@ -54,7 +47,7 @@ const Header = () => {
             aria-label='프로필'
             onClick={handleProfileClick}
           >
-            <img src={profileIcon} alt='프로필' className='h-6 w-6' />
+            <img src={profileIcon} alt='프로필' className='size-7 shrink-0' />
           </button>
 
           {isPopoverOpen && <ProfilePopover onClose={() => setIsPopoverOpen(false)} />}

@@ -1,4 +1,4 @@
-const FLOORS = ['3F', '4F', '5F'];
+import { FLOORS } from '../../classroom/constants/classrooms';
 
 function FloorTabs({ activeFloor, onFloorChange }) {
   return (
@@ -12,7 +12,7 @@ function FloorTabs({ activeFloor, onFloorChange }) {
             className={`h-11 w-20 cursor-pointer rounded-lg border-none text-sm leading-none font-semibold transition-colors ${
               isActive
                 ? 'bg-gachon-blue text-white'
-                : 'bg-[#f3f4f6] text-gachon-blue hover:bg-gachon-light-blue'
+                : 'bg-surface-soft text-gachon-blue hover:bg-gachon-light-blue'
             }`}
             type='button'
             aria-pressed={isActive}

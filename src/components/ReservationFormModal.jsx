@@ -1,6 +1,16 @@
-import { useState } from "react";
-import "./ReservationFormModal.css";
-import { createReservation } from "../apis/reservationApi";
+import useReservationForm from '../features/reservation/hooks/useReservationForm';
+
+const labelClass = 'mt-3.5 mb-2 block w-full text-left text-[13px] font-bold text-text-primary';
+const sectionLabelClass =
+  'mt-6 mb-2 block w-full text-left text-[13px] font-bold text-text-primary';
+const inputClass =
+  'h-[34px] w-full rounded-md border border-border-default bg-white px-2.5 py-[9px] text-[13px] text-text-primary outline-none placeholder:text-text-muted focus:border-middle-blue focus:shadow-[0_0_0_2px_rgb(105_152_209_/_0.15)]';
+const textareaClass =
+  'h-[58px] w-full resize-none rounded-md border border-border-default bg-white px-2.5 py-[9px] text-[13px] leading-[1.4] text-text-primary outline-none placeholder:text-text-muted focus:border-middle-blue focus:shadow-[0_0_0_2px_rgb(105_152_209_/_0.15)]';
+const checkboxRowClass = 'mt-1 mb-2 flex items-center gap-2.5';
+const checkboxLabelClass =
+  'inline-flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-[13px] text-text-primary';
+const checkboxClass = 'size-3 cursor-pointer accent-gachon-blue';
 
 /**
  * 예약 신청서 모달 (화면 2)
@@ -13,128 +23,79 @@ import { createReservation } from "../apis/reservationApi";
  * @param {string} props.reservationData.endTime   - "HH:mm"
  */
 function ReservationFormModal({ onClose, reservationData }) {
-  const [form, setForm] = useState({
-    title: "",
-    participantInfo: "",
-    eventTypeClass: false,
-    eventTypeSelfStudy: false,
-    eventTypeStudyGroup: false,
-    eventTypeEtc: false,
-    eventTypeEtcText: "",
-    useProjector: false,
-    useComputer: false,
-    useExtraEquipment: false,
-    extraEquipment: "",
-    reason: "",
-    applicantName: "",
-    applicantDepartment: "",
-    applicantStudentId: "",
-    applicantPhone: "",
-    professorName: "",
-    professorPhone: "",
+  const { form, handleChange, handleSubmit } = useReservationForm({
+    reservationData,
+    onClose,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
-  };
-
-  const getEventType = () => {
-    if (form.eventTypeClass) return "CLASS";
-    if (form.eventTypeSelfStudy) return "SELF_STUDY";
-    if (form.eventTypeStudyGroup) return "STUDY_GROUP";
-    if (form.eventTypeEtc) return "ETC";
-    return null;
-  };
-
-  const handleSubmit = async () => {
-    const body = {
-      ...reservationData,
-      title: form.title,
-      participantInfo: form.participantInfo,
-      eventType: getEventType(),
-      eventTypeEtc: form.eventTypeEtc ? form.eventTypeEtcText : null,
-      useProjector: form.useProjector,
-      useComputer: form.useComputer,
-      extraEquipment: form.useExtraEquipment ? form.extraEquipment : "",
-      reason: form.reason,
-      applicantName: form.applicantName,
-      applicantDepartment: form.applicantDepartment,
-      applicantStudentId: form.applicantStudentId,
-      applicantPhone: form.applicantPhone,
-      professorName: form.professorName,
-      professorPhone: form.professorPhone,
-    };
-
-    try {
-      await createReservation(body);
-      alert("예약 신청이 완료되었습니다.");
-      onClose();
-    } catch (err) {
-      console.error("예약 신청 실패:", err);
-      alert("예약 신청 중 오류가 발생했습니다. 다시 시도해주세요.");
-    }
-  };
-
   return (
-    <div className="modal-bg">
-      <div className="reservation-modal">
-        <div className="modal-header">
-          <h2>예약 사유 제출</h2>
-          <button type="button" onClick={onClose} className="close-btn">
+    <div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black/35'>
+      <div className='scrollbar-hidden max-h-[92vh] w-[550px] overflow-y-auto rounded-2xl bg-white px-[18px] pb-[18px]'>
+        <div className='flex h-12 items-center justify-between border-b border-border-muted'>
+          <h2 className='m-0 text-[17px] font-bold text-text-primary'>예약 사유 제출</h2>
+          <button
+            type='button'
+            onClick={onClose}
+            className='cursor-pointer border-none bg-transparent text-[26px] leading-none text-text-primary'
+          >
             ×
           </button>
         </div>
 
-        <div className="modal-body">
-          <label className="field-label">
-            행사명<span>*</span>
+        <div className='pt-[17px]'>
+          <label className={labelClass}>
+            행사명<span className='text-mudang-red'>*</span>
           </label>
           <input
-            name="title"
-            placeholder="제목을 입력하세요"
+            className={inputClass}
+            name='title'
+            placeholder='제목을 입력하세요'
             value={form.title}
             onChange={handleChange}
           />
 
-          <label className="field-label">
-            참여대상/인원<span>*</span>
+          <label className={labelClass}>
+            참여대상/인원<span className='text-mudang-red'>*</span>
           </label>
           <input
-            name="participantInfo"
-            placeholder="교수 외 인원"
+            className={inputClass}
+            name='participantInfo'
+            placeholder='교수 외 인원'
             value={form.participantInfo}
             onChange={handleChange}
           />
 
-          <label className="field-label">
-            행사종류<span>*</span>
+          <label className={labelClass}>
+            행사종류<span className='text-mudang-red'>*</span>
           </label>
-          <div className="checkbox-row">
-            <label>
+          <div className={checkboxRowClass}>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="eventTypeClass"
+                className={checkboxClass}
+                type='checkbox'
+                name='eventTypeClass'
                 checked={form.eventTypeClass}
                 onChange={handleChange}
               />
               수업
             </label>
 
-            <label>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="eventTypeSelfStudy"
+                className={checkboxClass}
+                type='checkbox'
+                name='eventTypeSelfStudy'
                 checked={form.eventTypeSelfStudy}
                 onChange={handleChange}
               />
               자습
             </label>
 
-            <label>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="eventTypeStudyGroup"
+                className={checkboxClass}
+                type='checkbox'
+                name='eventTypeStudyGroup'
                 checked={form.eventTypeStudyGroup}
                 onChange={handleChange}
               />
@@ -142,11 +103,12 @@ function ReservationFormModal({ onClose, reservationData }) {
             </label>
           </div>
 
-          <div className="checkbox-row single">
-            <label>
+          <div className='mt-0.5 mb-2 flex items-center gap-2.5'>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="eventTypeEtc"
+                className={checkboxClass}
+                type='checkbox'
+                name='eventTypeEtc'
                 checked={form.eventTypeEtc}
                 onChange={handleChange}
               />
@@ -155,28 +117,31 @@ function ReservationFormModal({ onClose, reservationData }) {
           </div>
 
           <textarea
-            name="eventTypeEtcText"
-            placeholder="내용을 입력하세요"
+            className={textareaClass}
+            name='eventTypeEtcText'
+            placeholder='내용을 입력하세요'
             value={form.eventTypeEtcText}
             onChange={handleChange}
           />
 
-          <label className="section-label">기자재 사용 여부</label>
-          <div className="checkbox-row">
-            <label>
+          <label className={sectionLabelClass}>기자재 사용 여부</label>
+          <div className={checkboxRowClass}>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="useProjector"
+                className={checkboxClass}
+                type='checkbox'
+                name='useProjector'
                 checked={form.useProjector}
                 onChange={handleChange}
               />
               빔 프로젝터 사용 여부
             </label>
 
-            <label>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="useComputer"
+                className={checkboxClass}
+                type='checkbox'
+                name='useComputer'
                 checked={form.useComputer}
                 onChange={handleChange}
               />
@@ -184,11 +149,12 @@ function ReservationFormModal({ onClose, reservationData }) {
             </label>
           </div>
 
-          <div className="checkbox-row single">
-            <label>
+          <div className='mt-0.5 mb-2 flex items-center gap-2.5'>
+            <label className={checkboxLabelClass}>
               <input
-                type="checkbox"
-                name="useExtraEquipment"
+                className={checkboxClass}
+                type='checkbox'
+                name='useExtraEquipment'
                 checked={form.useExtraEquipment}
                 onChange={handleChange}
               />
@@ -197,75 +163,90 @@ function ReservationFormModal({ onClose, reservationData }) {
           </div>
 
           <textarea
-            name="extraEquipment"
-            placeholder="내용을 입력하세요"
+            className={textareaClass}
+            name='extraEquipment'
+            placeholder='내용을 입력하세요'
             value={form.extraEquipment}
             onChange={handleChange}
           />
 
-          <label className="field-label">
-            신청사유<span>*</span>
+          <label className={labelClass}>
+            신청사유<span className='text-mudang-red'>*</span>
           </label>
           <textarea
-            name="reason"
-            className="reason"
-            placeholder="내용을 입력하세요"
+            className={`${textareaClass} h-[104px]`}
+            name='reason'
+            placeholder='내용을 입력하세요'
             value={form.reason}
             onChange={handleChange}
           />
 
-          <label className="field-label">
-            신청인<span>*</span>
+          <label className={labelClass}>
+            신청인<span className='text-mudang-red'>*</span>
           </label>
-          <div className="input-row applicant-row">
+          <div className='grid grid-cols-2 gap-2.5'>
             <input
-              name="applicantName"
-              placeholder="이름"
+              className={inputClass}
+              name='applicantName'
+              placeholder='이름'
               value={form.applicantName}
               onChange={handleChange}
             />
             <input
-              name="applicantDepartment"
-              placeholder="학과"
+              className={inputClass}
+              name='applicantDepartment'
+              placeholder='학과'
               value={form.applicantDepartment}
               onChange={handleChange}
             />
             <input
-              name="applicantStudentId"
-              placeholder="학번"
+              className={inputClass}
+              name='applicantStudentId'
+              placeholder='학번'
               value={form.applicantStudentId}
               onChange={handleChange}
             />
             <input
-              name="applicantPhone"
-              placeholder="전화번호"
+              className={inputClass}
+              name='applicantPhone'
+              placeholder='전화번호'
               value={form.applicantPhone}
               onChange={handleChange}
             />
           </div>
 
-          <label className="section-label professor-title">지도교수</label>
-          <div className="input-row professor-row">
+          <label className={`${sectionLabelClass} mt-2.5`}>지도교수</label>
+          <div className='flex items-center gap-2.5'>
             <input
-              name="professorName"
-              placeholder="이름"
+              className={`${inputClass} w-[84px]`}
+              name='professorName'
+              placeholder='이름'
               value={form.professorName}
               onChange={handleChange}
             />
             <input
-              name="professorPhone"
-              placeholder="전화번호"
+              className={`${inputClass} w-[250px]`}
+              name='professorPhone'
+              placeholder='전화번호'
               value={form.professorPhone}
               onChange={handleChange}
             />
           </div>
         </div>
 
-        <div className="modal-footer">
-          <button type="button" className="submit-btn" onClick={handleSubmit}>
+        <div className='mt-[26px] flex gap-2 px-0.5'>
+          <button
+            type='button'
+            className='h-[34px] flex-1 cursor-pointer rounded-md border-none bg-gachon-blue text-[13px] font-bold text-white hover:bg-middle-blue'
+            onClick={handleSubmit}
+          >
             작성 완료
           </button>
-          <button type="button" className="cancel-btn" onClick={onClose}>
+          <button
+            type='button'
+            className='h-[34px] w-[54px] cursor-pointer rounded-md border-none bg-surface-soft text-[13px] font-semibold text-text-secondary hover:bg-border-default'
+            onClick={onClose}
+          >
             취소
           </button>
         </div>

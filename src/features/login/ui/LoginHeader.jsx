@@ -12,7 +12,7 @@ function LoginHeader() {
           컴퓨터공학과
         </h1>
       </div>
-      <p className='m-0 text-center text-[17px] leading-6 font-normal text-[#4a5565]'>
+      <p className='m-0 text-center text-[17px] leading-6 font-normal text-text-secondary'>
         강의실 예약 시스템
       </p>
     </header>

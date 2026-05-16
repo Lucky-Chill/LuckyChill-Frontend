@@ -6,24 +6,30 @@
 import { useState } from 'react';
 
 const WEEK_DAYS = [
-  { label: '일', color: 'text-[#EF4444]' },
-  { label: '월', color: 'text-[#999]' },
-  { label: '화', color: 'text-[#999]' },
-  { label: '수', color: 'text-[#999]' },
-  { label: '목', color: 'text-[#999]' },
-  { label: '금', color: 'text-[#999]' },
-  { label: '토', color: 'text-[#3B82F6]' },
+  { label: '일', color: 'text-mudang-red' },
+  { label: '월', color: 'text-text-muted' },
+  { label: '화', color: 'text-text-muted' },
+  { label: '수', color: 'text-text-muted' },
+  { label: '목', color: 'text-text-muted' },
+  { label: '금', color: 'text-text-muted' },
+  { label: '토', color: 'text-gachon-blue' },
 ];
 
 /**
  * @param {Object} props
  * @param {number[]} props.disabledDates - 예약 불가 날짜 배열
  * @param {number[]} props.reservedDates - 이미 예약된 날짜 배열
- * @param {number|null} props.selectedDate - 현재 선택된 날짜
+ * @param {string|null} props.selectedDateStr - 현재 선택된 날짜 문자열
  * @param {(date: number, year: number, month: number) => void} props.onDateSelect - 날짜 선택 콜백 (month은 1-based)
  * @param {(year: number, month: number) => void} [props.onMonthChange] - 월 변경 콜백 (month은 1-based)
  */
-const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, onMonthChange }) => {
+const Calendar = ({
+  disabledDates,
+  reservedDates,
+  selectedDateStr,
+  onDateSelect,
+  onMonthChange,
+}) => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -38,6 +44,14 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, on
    */
   const isToday = (date) =>
     today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === date;
+
+  /**
+   * 날짜를 YYYY-MM-DD 문자열로 변환합니다.
+   * @param {number} date
+   * @returns {string}
+   */
+  const formatDateString = (date) =>
+    `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
 
   const handlePrevMonth = () => {
     const newYear = viewMonth === 0 ? viewYear - 1 : viewYear;
@@ -67,27 +81,28 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, on
    */
   const getDateClass = (date) => {
     const base =
-      'w-[96px] h-10 flex items-center justify-center text-sm font-medium border-none rounded-lg cursor-pointer mx-auto transition-all duration-150 ';
+      'h-10 flex items-center justify-center text-sm font-medium border-none cursor-pointer mx-auto transition-all duration-150 ';
     if (disabledDates.includes(date)) {
-      return base + 'text-[#ccc] cursor-not-allowed bg-transparent';
+      return base + 'w-[96px] rounded-lg text-disabled-gray cursor-not-allowed bg-transparent';
     }
     if (reservedDates.includes(date)) {
-      return base + 'bg-[#6B7280] text-white cursor-not-allowed';
+      return base + 'w-[96px] rounded-lg bg-disabled-gray text-white cursor-not-allowed';
     }
-    if (selectedDate === date) {
-      return base + 'bg-[#1D4ED8] text-white font-bold';
+    if (selectedDateStr === formatDateString(date)) {
+      return base + 'w-10 rounded-full bg-gachon-blue text-white font-bold';
     }
     if (isToday(date)) {
       return (
-        base + 'border-2 border-[#F59E0B] text-[#333] font-bold bg-transparent hover:bg-[#DBEAFE]'
+        base +
+        'w-[96px] rounded-lg border-2 border-gachon-orange text-text-primary font-bold bg-transparent hover:bg-gachon-light-blue'
       );
     }
-    return base + 'text-[#333] bg-transparent hover:bg-[#DBEAFE]';
+    return base + 'w-[96px] rounded-lg text-text-primary bg-transparent hover:bg-gachon-light-blue';
   };
 
   return (
     <div>
-      <div className='mb-8 flex items-center gap-2 text-base font-bold text-[#111]'>
+      <div className='mb-8 flex items-center gap-2 text-base font-bold text-text-primary'>
         <svg
           width='20'
           height='20'
@@ -107,16 +122,16 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, on
       <div className='mb-9 flex items-center justify-center gap-4'>
         <button
           onClick={handlePrevMonth}
-          className='cursor-pointer rounded-lg border-none bg-transparent px-2 py-1 text-base text-[#555] transition-colors hover:bg-[#f0f0f0]'
+          className='cursor-pointer rounded-lg border-none bg-transparent px-2 py-1 text-base text-text-secondary transition-colors hover:bg-border-muted'
         >
           ‹
         </button>
-        <div className='min-w-[120px] text-center text-base font-bold text-[#111]'>
+        <div className='min-w-[120px] text-center text-base font-bold text-text-primary'>
           {viewYear}년 {viewMonth + 1}월
         </div>
         <button
           onClick={handleNextMonth}
-          className='cursor-pointer rounded-lg border-none bg-transparent px-2 py-1 text-base text-[#555] transition-colors hover:bg-[#f0f0f0]'
+          className='cursor-pointer rounded-lg border-none bg-transparent px-2 py-1 text-base text-text-secondary transition-colors hover:bg-border-muted'
         >
           ›
         </button>
@@ -144,17 +159,17 @@ const Calendar = ({ disabledDates, reservedDates, selectedDate, onDateSelect, on
         )}
       </div>
 
-      <div className='mt-8 flex items-center gap-6 text-sm text-[#555]'>
+      <div className='mt-8 flex items-center gap-6 text-sm text-text-secondary'>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#6B7280]' />
+          <div className='size-4 rounded-lg bg-disabled-gray' />
           <span>예약불가</span>
         </div>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#F59E0B]' />
+          <div className='size-4 rounded-lg bg-gachon-orange' />
           <span>오늘</span>
         </div>
         <div className='flex items-center gap-2'>
-          <div className='size-4 rounded-lg bg-[#1D4ED8]' />
+          <div className='size-4 rounded-lg bg-gachon-blue' />
           <span>선택</span>
         </div>
       </div>
