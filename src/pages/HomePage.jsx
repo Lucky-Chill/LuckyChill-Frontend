@@ -1,5 +1,5 @@
-import HomeContent from '../../features/home/ui/HomeContent';
-import MainLayout from '../../layouts/MainLayout';
+import HomeContent from '../features/home/ui/HomeContent';
+import MainLayout from '../layouts/MainLayout';
 
 function HomePage() {
   return (

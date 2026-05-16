@@ -1,4 +1,4 @@
-import useReservationForm from '../features/reservation/hooks/useReservationForm';
+import useReservationForm from './hooks/useReservationForm';
 
 const labelClass = 'mt-3.5 mb-2 block w-full text-left text-[13px] font-bold text-text-primary';
 const sectionLabelClass =

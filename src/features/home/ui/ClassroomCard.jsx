@@ -1,5 +1,12 @@
-import CalendarIcon from "../../../assets/calendar.svg";
+import CalendarIcon from '../../../assets/calendar.svg';
 
+/**
+ * 강의실 카드 컴포넌트
+ * @param {Object} props
+ * @param {string} props.roomName - 강의실 이름
+ * @param {number} props.capacity - 수용 인원
+ * @param {() => void} props.onClick - 카드 클릭 핸들러
+ */
 function ClassroomCard({ roomName, capacity, onClick }) {
   return (
     <button

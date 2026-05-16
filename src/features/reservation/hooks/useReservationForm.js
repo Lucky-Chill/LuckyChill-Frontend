@@ -23,8 +23,38 @@ const INITIAL_FORM = {
 };
 
 /**
+ * @typedef {Object} ReservationFormState
+ * @property {string} title - 행사명
+ * @property {string} participantInfo - 참여 대상/인원
+ * @property {boolean} eventTypeClass - 수업 여부
+ * @property {boolean} eventTypeSelfStudy - 자습 여부
+ * @property {boolean} eventTypeStudyGroup - 스터디 그룹 여부
+ * @property {boolean} eventTypeEtc - 기타 행사 여부
+ * @property {string} eventTypeEtcText - 기타 행사 내용
+ * @property {boolean} useProjector - 빔 프로젝터 사용 여부
+ * @property {boolean} useComputer - 전자교탁 컴퓨터 사용 여부
+ * @property {boolean} useExtraEquipment - 기타 장비 사용 여부
+ * @property {string} extraEquipment - 기타 장비 내용
+ * @property {string} reason - 신청 사유
+ * @property {string} applicantName - 신청인 이름
+ * @property {string} applicantDepartment - 신청인 학과
+ * @property {string} applicantStudentId - 신청인 학번
+ * @property {string} applicantPhone - 신청인 전화번호
+ * @property {string} professorName - 지도교수 이름
+ * @property {string} professorPhone - 지도교수 전화번호
+ */
+
+/**
+ * @typedef {Object} ReservationBaseData
+ * @property {string} classroomId - 강의실 ID
+ * @property {string|null} reservationDate - 예약 날짜
+ * @property {string} startTime - 시작 시간
+ * @property {string} endTime - 종료 시간
+ */
+
+/**
  * 선택된 행사 종류를 API 값으로 변환합니다.
- * @param {Object} form
+ * @param {ReservationFormState} form
  * @returns {"CLASS"|"SELF_STUDY"|"STUDY_GROUP"|"ETC"|null}
  */
 const getEventType = (form) => {
@@ -38,9 +68,13 @@ const getEventType = (form) => {
 /**
  * 예약 신청 폼의 입력 상태와 제출 로직을 관리합니다.
  * @param {Object} params
- * @param {Object} params.reservationData
+ * @param {ReservationBaseData} params.reservationData
  * @param {() => void} params.onClose
- * @returns {{ form: Object, handleChange: Function, handleSubmit: Function }}
+ * @returns {{
+ *   form: ReservationFormState,
+ *   handleChange: (event: import('react').ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void,
+ *   handleSubmit: () => Promise<void>
+ * }}
  */
 const useReservationForm = ({ reservationData, onClose }) => {
   const [form, setForm] = useState(INITIAL_FORM);

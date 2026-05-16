@@ -1,5 +1,11 @@
 import { FLOORS } from '../../classroom/constants/classrooms';
 
+/**
+ * 층 선택 탭 컴포넌트
+ * @param {Object} props
+ * @param {string} props.activeFloor - 현재 선택된 층
+ * @param {(floor: string) => void} props.onFloorChange - 층 변경 핸들러
+ */
 function FloorTabs({ activeFloor, onFloorChange }) {
   return (
     <div className='flex gap-3' aria-label='강의실 층 선택'>

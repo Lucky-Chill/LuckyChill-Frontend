@@ -7,7 +7,7 @@ import Calendar from './Calendar';
 import TimeSelector from './TimeSelector';
 import RoomInfo from './RoomInfo';
 import ReservationButtons from './ReservationButtons';
-import ReservationFormModal from '../../components/ReservationFormModal';
+import ReservationFormModal from './ReservationFormModal';
 import useReservationPage from './hooks/useReservationPage';
 
 /**

@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/home/HomePage';
-import LoginPage from './pages/login/LoginPage';
+import MyReservations from './pages/MyReservations';
+import AdminPage from './pages/AdminPage';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
 import Reservation from './pages/Reservation';
-import MyReservations from './pages/my/MyReservations';
-import AdminPage from './pages/adminpage';
 
 function AppRouter() {
   return (

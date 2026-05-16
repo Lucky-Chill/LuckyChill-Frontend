@@ -1,5 +1,5 @@
-import LoginHeader from '../../features/login/ui/LoginHeader';
-import UserLoginButton from '../../features/login/ui/UserLoginButton';
+import LoginHeader from '../features/login/ui/LoginHeader';
+import UserLoginButton from '../features/login/ui/UserLoginButton';
 
 function LoginPage() {
   return (
