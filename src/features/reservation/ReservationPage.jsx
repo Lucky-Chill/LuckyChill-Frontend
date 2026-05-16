@@ -8,6 +8,7 @@ import Calendar from './Calendar';
 import TimeSelector from './TimeSelector';
 import RoomInfo from './RoomInfo';
 import ReservationButtons from './ReservationButtons';
+import ReservationFormModal from '../../components/ReservationFormModal';
 
 const TIME_SLOTS = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'];
 
@@ -29,6 +30,7 @@ const ReservationPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /**
    * 날짜 선택 핸들러 — 날짜 변경 시 시간 선택 초기화
@@ -82,10 +84,7 @@ const ReservationPage = () => {
   };
 
   const handleReserve = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    alert(`예약 완료!\n날짜: ${year}년 ${month}월 ${selectedDate}일\n시간: ${startTime}:00 ~ ${endTime}:00`);
+    setIsModalOpen(true);
   };
 
   const canReserve = selectedDate !== null && startTime !== null && endTime !== null;
@@ -134,6 +133,8 @@ const ReservationPage = () => {
         onCancel={handleCancel}
         onReserve={handleReserve}
       />
+
+      {isModalOpen && <ReservationFormModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };
