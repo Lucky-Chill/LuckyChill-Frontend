@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ClassroomCard from './ClassroomCard';
 import FloorTabs from './FloorTabs';
 
@@ -27,8 +28,13 @@ const CLASSROOMS_BY_FLOOR = {
 };
 
 function HomeContent() {
+  const navigate = useNavigate();
   const [activeFloor, setActiveFloor] = useState('3F');
   const classrooms = CLASSROOMS_BY_FLOOR[activeFloor];
+
+  const handleClassroomClick = () => {
+    navigate('/reservation');
+  };
 
   return (
     <section className='pt-12 pb-16'>
@@ -47,6 +53,7 @@ function HomeContent() {
               key={classroom.id}
               roomName={classroom.roomName}
               capacity={classroom.capacity}
+              onClick={handleClassroomClick}
             />
           ))}
         </div>
