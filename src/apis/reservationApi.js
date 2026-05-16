@@ -1,6 +1,6 @@
 /**
  * 예약 관련 API 함수
- * @description POST /api/reservations
+ * @description POST /api/reservations, GET /api/reservations/me
  */
 import httpClient from '../libs/http/httpClient';
 
@@ -32,3 +32,9 @@ export const createReservation = (body) =>
     method: 'POST',
     body: JSON.stringify(body),
   });
+
+/**
+ * 내 예약 신청 목록 조회
+ * @returns {Promise<{ success: boolean, data: Array<{ id, classroomName, reservationDate, startTime, endTime, title, status }> }>}
+ */
+export const getMyReservations = () => httpClient('/api/reservations/me');
