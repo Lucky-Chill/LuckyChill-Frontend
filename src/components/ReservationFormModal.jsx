@@ -1,7 +1,18 @@
 import { useState } from "react";
 import "./ReservationFormModal.css";
+import { createReservation } from "../apis/reservationApi";
 
-function ReservationFormModal({ onClose }) {
+/**
+ * 예약 신청서 모달 (화면 2)
+ * @param {Object} props
+ * @param {() => void} props.onClose - 모달 닫기 콜백
+ * @param {Object} props.reservationData - 화면 1에서 전달된 예약 기본 정보
+ * @param {string} props.reservationData.classroomId
+ * @param {string} props.reservationData.reservationDate - "YYYY-MM-DD"
+ * @param {string} props.reservationData.startTime - "HH:mm"
+ * @param {string} props.reservationData.endTime   - "HH:mm"
+ */
+function ReservationFormModal({ onClose, reservationData }) {
   const [form, setForm] = useState({
     title: "",
     participantInfo: "",
@@ -16,6 +27,7 @@ function ReservationFormModal({ onClose }) {
     extraEquipment: "",
     reason: "",
     applicantName: "",
+    applicantDepartment: "",
     applicantStudentId: "",
     applicantPhone: "",
     professorName: "",
@@ -24,17 +36,44 @@ function ReservationFormModal({ onClose }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  const handleSubmit = () => {
-    console.log("예약 신청 데이터:", form);
-    alert("예약 신청이 완료되었습니다.");
-    onClose();
+  const getEventType = () => {
+    if (form.eventTypeClass) return "CLASS";
+    if (form.eventTypeSelfStudy) return "SELF_STUDY";
+    if (form.eventTypeStudyGroup) return "STUDY_GROUP";
+    if (form.eventTypeEtc) return "ETC";
+    return null;
+  };
+
+  const handleSubmit = async () => {
+    const body = {
+      ...reservationData,
+      title: form.title,
+      participantInfo: form.participantInfo,
+      eventType: getEventType(),
+      eventTypeEtc: form.eventTypeEtc ? form.eventTypeEtcText : null,
+      useProjector: form.useProjector,
+      useComputer: form.useComputer,
+      extraEquipment: form.useExtraEquipment ? form.extraEquipment : "",
+      reason: form.reason,
+      applicantName: form.applicantName,
+      applicantDepartment: form.applicantDepartment,
+      applicantStudentId: form.applicantStudentId,
+      applicantPhone: form.applicantPhone,
+      professorName: form.professorName,
+      professorPhone: form.professorPhone,
+    };
+
+    try {
+      await createReservation(body);
+      alert("예약 신청이 완료되었습니다.");
+      onClose();
+    } catch (err) {
+      console.error("예약 신청 실패:", err);
+      alert("예약 신청 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -183,6 +222,12 @@ function ReservationFormModal({ onClose }) {
               name="applicantName"
               placeholder="이름"
               value={form.applicantName}
+              onChange={handleChange}
+            />
+            <input
+              name="applicantDepartment"
+              placeholder="학과"
+              value={form.applicantDepartment}
               onChange={handleChange}
             />
             <input
