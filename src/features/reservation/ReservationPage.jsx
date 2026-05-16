@@ -11,23 +11,6 @@ import ReservationButtons from './ReservationButtons';
 import ReservationFormModal from '../../components/ReservationFormModal';
 import { getClassroom, getUnavailableDates, getSchedule } from '../../apis/classroomApi';
 
-const TIME_SLOTS = [
-  '09',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-];
-=======
 // 추후 라우트 파라미터(:classroomId)로 교체
 const CLASSROOM_ID = 'classroom-uuid';
 
@@ -155,7 +138,6 @@ const ReservationPage = () => {
       <h1 className='m-0 text-base leading-6 font-bold tracking-normal text-[#111827]'>
         {ROOM_DATA.name} 예약
       </h1>
-=======
       <div className="px-6 py-[18px] text-base font-bold text-[#111] border-b border-[#f0f0f0]">
         {roomData?.name ?? '강의실 201'} 예약
       </div>
